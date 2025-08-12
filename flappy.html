@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-blue-400">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flappy Bird</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      #gameCanvas {
+        display: block;
+        margin: 0 auto;
+        background: url("./Assets/flappybirdbg.png") no-repeat center center;
+        background-size: cover;
+        border: 2px solid #333;
+      }
+    </style>
+  </head>
+  <body class="flex items-center justify-center h-full">
+    <canvas
+      id="gameCanvas"
+      width="400"
+      height="600"
+      class="rounded-lg shadow-lg"
+    ></canvas>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Load images
+      const birdImg = new Image();
+      birdImg.src = "./Assets/flappybird.png";
+
+      const pipeImg = new Image();
+      pipeImg.src = "./Assets/pipe.png";
+
+      // Game variables
+      const gravity = 0.6;
+      const jumpPower = -8;
+      const pipeGap = 150;
+      const pipeWidth = 80;
+      const pipeSpeed = 2;
+
+      let bird = {
+        x: 50,
+        y: 250,
+        width: 40,
+        height: 30,
+        velocity: 0,
+      };
+
+      let pipes = [];
+      let frameCount = 0;
+      let score = 0;
+      let gameOver = false;
+
+      function resetGame() {
+        bird.y = 250;
+        bird.velocity = 0;
+        pipes = [];
+        score = 0;
+        frameCount = 0;
+        gameOver = false;
+      }
+
+      function drawBird() {
+        ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+      }
+
+      function drawPipe(pipe) {
+        // Top pipe (rotated upside down)
+        ctx.save();
+        ctx.translate(pipe.x + pipeWidth / 2, pipe.topY + pipe.topHeight / 2);
+        ctx.rotate(Math.PI);
+        ctx.drawImage(
+          pipeImg,
+          -pipeWidth / 2,
+          -pipe.topHeight / 2,
+          pipeWidth,
+          pipe.topHeight
+        );
+        ctx.restore();
+
+        // Bottom pipe (normal)
+        ctx.drawImage(
+          pipeImg,
+          pipe.x,
+          pipe.bottomY,
+          pipeWidth,
+          pipe.bottomHeight
+        );
+      }
+
+      function drawScore() {
+        ctx.fillStyle = "white";
+        ctx.font = "30px Arial";
+        ctx.textAlign = "start"; // Reset text alignment to left
+        ctx.fillText("Score: " + score, 15, 40); // Add a little padding from left & top
+      }
+
+      function update() {
+        if (gameOver) return;
+
+        frameCount++;
+
+        // Bird physics
+        bird.velocity += gravity;
+        bird.y += bird.velocity;
+
+        // Prevent bird from going off screen top
+        if (bird.y < 0) {
+          bird.y = 0;
+          bird.velocity = 0;
+        }
+
+        // Check if bird hits bottom
+        if (bird.y + bird.height > canvas.height) {
+          gameOver = true;
+        }
+
+        // Add new pipes every 150 frames (~2.5 seconds at 60fps)
+        if (frameCount % 150 === 0) {
+          let pipeTopHeight =
+            Math.floor(Math.random() * (canvas.height - pipeGap - 100)) + 50;
+          pipes.push({
+            x: canvas.width,
+            topY: 0,
+            topHeight: pipeTopHeight,
+            bottomY: pipeTopHeight + pipeGap,
+            bottomHeight: canvas.height - (pipeTopHeight + pipeGap),
+            passed: false,
+          });
+        }
+
+        // Move pipes to the left
+        pipes.forEach((pipe) => {
+          pipe.x -= pipeSpeed;
+
+          // Check collision with bird
+          if (
+            bird.x + bird.width > pipe.x &&
+            bird.x < pipe.x + pipeWidth &&
+            (bird.y < pipe.topHeight || bird.y + bird.height > pipe.bottomY)
+          ) {
+            gameOver = true;
+          }
+
+          // Increase score if pipe passed
+          if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
+            pipe.passed = true;
+            score++;
+          }
+        });
+
+        // Remove off-screen pipes
+        pipes = pipes.filter((pipe) => pipe.x + pipeWidth > 0);
+      }
+
+      function draw() {
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Background is via CSS background image, so no need to redraw here
+
+        drawBird();
+
+        pipes.forEach(drawPipe);
+
+        drawScore();
+
+        if (gameOver) {
+          ctx.fillStyle = "rgba(0,0,0,0.5)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "white";
+          ctx.font = "50px Arial";
+          ctx.textAlign = "center";
+          ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 20);
+          ctx.font = "25px Arial";
+          ctx.fillText(
+            "Click to Restart",
+            canvas.width / 2,
+            canvas.height / 2 + 20
+          );
+        }
+      }
+
+      function gameLoop() {
+        update();
+        draw();
+        if (!gameOver) {
+          requestAnimationFrame(gameLoop);
+        }
+      }
+
+      // Bird jump on space or click
+      function jump() {
+        if (!gameOver) {
+          bird.velocity = jumpPower;
+        } else {
+          resetGame();
+          gameLoop();
+        }
+      }
+
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "Space") {
+          e.preventDefault();
+          jump();
+        }
+      });
+
+      window.addEventListener("mousedown", jump);
+
+      // Start game when images loaded
+      let imagesLoaded = 0;
+      [birdImg, pipeImg].forEach((img) => {
+        img.onload = () => {
+          imagesLoaded++;
+          if (imagesLoaded === 2) {
+            gameLoop();
+          }
+        };
+      });
+    </script>
+  </body>
+</html>
