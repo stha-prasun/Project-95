@@ -6,6 +6,11 @@
     <title>Project 95</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+      * {
+        font-family: "Tahoma", "MS Sans Serif", "Geneva", "Verdana",
+          "sans-serif";
+      }
+
       body {
         background: #018281;
       }
@@ -62,6 +67,13 @@
         color: white;
         border-color: #000080;
       }
+      @media (max-width: 600px) {
+        #my_modal_3 > div {
+          width: 90vw !important;
+          height: auto !important;
+          max-height: 80vh;
+        }
+      }
     </style>
   </head>
   <body class="h-screen flex flex-col">
@@ -70,7 +82,7 @@
       <!-- Folder Icon (Profiles) -->
       <div
         class="flex flex-col items-center w-16 cursor-pointer select-none"
-        ondblclick="my_modal_3.showModal()"
+        onclick="my_modal_3.showModal()"
       >
         <img src="./Assets/folder.svg" alt="Folder" class="w-12 h-12 mb-1" />
         <span class="text-white text-sm text-center">About Us</span>
@@ -88,7 +100,7 @@
       <!-- Camera Icon -->
       <div
         class="flex flex-col items-center w-16 cursor-pointer select-none"
-        ondblclick="openCamera()"
+        onclick="openCamera()"
         title="Open Camera"
       >
         <img src="./Assets/camera.svg" alt="Camera" class="w-12 h-12 mb-1" />
@@ -98,7 +110,7 @@
       <!-- Gallery Folder Icon -->
       <div
         class="flex flex-col items-center w-16 cursor-pointer select-none"
-        ondblclick="openGallery()"
+        onclick="openGallery()"
         title="Open Gallery"
       >
         <img
@@ -118,6 +130,7 @@
       >
         Start
       </button>
+
       <div class="flex-1"></div>
       <div id="clock" class="text-sm text-black">12:00 PM</div>
     </div>
@@ -128,8 +141,11 @@
       class="hidden fixed bottom-10 left-2 w-48 bg-[#c0c0c0] border border-gray-600 shadow-lg"
     >
       <ul class="flex flex-col">
-        <li class="px-3 py-2 hover:bg-blue-600 hover:text-white cursor-pointer">
-          Programs
+        <li
+          id="chatBtn"
+          class="px-3 py-2 hover:bg-blue-600 hover:text-white cursor-pointer"
+        >
+          Cortana
         </li>
         <li class="px-3 py-2 hover:bg-blue-600 hover:text-white cursor-pointer">
           Documents
@@ -151,53 +167,191 @@
       </ul>
     </div>
 
-    <!-- Folder Modal -->
-    <dialog id="my_modal_3" class="modal">
+    <!-- Chatbot Modal -->
+    <dialog
+      id="chatModal"
+      class="modal max-w-md w-full bg-gray-200"
+      style="border: 4px solid #808080"
+    >
       <div
-        class="modal-box border border-gray-600 bg-gray-200 relative w-[520px] h-[360px] p-4"
+        class="relative flex flex-col h-[400px] bg-gray-200"
+        style="
+          border-top: 2px solid white;
+          border-left: 2px solid white;
+          border-bottom: 2px solid #404040;
+          border-right: 2px solid #404040;
+          padding: 1rem;
+          box-sizing: border-box;
+        "
       >
         <form method="dialog">
           <button
-            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            class="absolute right-2 top-2 w-7 h-7 bg-gray-200 text-black font-bold text-sm"
+            style="
+              border-top: 2px solid white;
+              border-left: 2px solid white;
+              border-bottom: 2px solid #404040;
+              border-right: 2px solid #404040;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              user-select: none;
+            "
+            aria-label="Close"
           >
             ✕
           </button>
         </form>
-        <h3 class="text-lg font-bold mb-4">About Us</h3>
+        <h3
+          class="text-lg font-bold mb-2 select-none"
+          style="
+            color: black;
+            font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+          "
+        >
+          Cortana
+        </h3>
+        <div
+          id="chatMessages"
+          class="flex-1 overflow-y-auto bg-white mb-2"
+          style="
+            border-top: 2px solid white;
+            border-left: 2px solid white;
+            border-bottom: 2px solid #404040;
+            border-right: 2px solid #404040;
+            padding: 0.5rem;
+            font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+            color: black;
+          "
+        ></div>
+        <div class="flex space-x-2">
+          <input
+            id="chatInput"
+            type="text"
+            placeholder="Type a message..."
+            class="flex-1 bg-white text-black font-mono"
+            style="
+              border-top: 2px solid white;
+              border-left: 2px solid white;
+              border-bottom: 2px solid #404040;
+              border-right: 2px solid #404040;
+              padding: 0.25rem 0.5rem;
+              font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+              outline: none;
+            "
+          />
+          <button
+            id="sendMsg"
+            type="button"
+            class="text-white font-bold"
+            style="
+              background-color: #000080;
+              border-top: 2px solid white;
+              border-left: 2px solid white;
+              border-bottom: 2px solid #404040;
+              border-right: 2px solid #404040;
+              padding: 0.25rem 1rem;
+              user-select: none;
+              font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+            "
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Folder Modal -->
+    <dialog
+      id="my_modal_3"
+      class="modal"
+      style="border: 4px solid #808080; background-color: #c0c0c0"
+    >
+      <div
+        class="relative w-[520px] h-[360px] p-4 bg-gray-200"
+        style="
+          border-top: 2px solid white;
+          border-left: 2px solid white;
+          border-bottom: 2px solid #404040;
+          border-right: 2px solid #404040;
+          box-sizing: border-box;
+          background-color: #c0c0c0;
+          font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+          color: black;
+        "
+      >
+        <form method="dialog">
+          <button
+            class="absolute right-2 top-2 w-7 h-7 text-black font-bold text-sm"
+            style="
+              border-top: 2px solid white;
+              border-left: 2px solid white;
+              border-bottom: 2px solid #404040;
+              border-right: 2px solid #404040;
+              background-color: #c0c0c0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              user-select: none;
+            "
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </form>
+        <h3 class="text-lg font-bold mb-4 select-none" style="color: black">
+          About Us
+        </h3>
 
         <!-- Icon area -->
         <div class="flex flex-wrap content-start gap-x-12 gap-y-10">
-          <div class="icon-item flex flex-col items-center w-16">
+          <div class="icon-item flex flex-col items-center w-16 select-none">
             <img
               src="./Assets/chrome.svg"
               alt="Chrome 1"
               class="w-12 h-12 mb-1"
             />
-            <span class="text-xs text-center">Prasun</span>
+            <span
+              class="text-xs text-center"
+              style="font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif"
+              >Prasun</span
+            >
           </div>
-          <div class="icon-item flex flex-col items-center w-16">
+          <div class="icon-item flex flex-col items-center w-16 select-none">
             <img
               src="./Assets/chrome.svg"
               alt="Chrome 2"
               class="w-12 h-12 mb-1"
             />
-            <span class="text-xs text-center">Pramish</span>
+            <span
+              class="text-xs text-center"
+              style="font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif"
+              >Pramish</span
+            >
           </div>
-          <div class="icon-item flex flex-col items-center w-16">
+          <div class="icon-item flex flex-col items-center w-16 select-none">
             <img
               src="./Assets/chrome.svg"
               alt="Chrome 3"
               class="w-12 h-12 mb-1"
             />
-            <span class="text-xs text-center">Rohan</span>
+            <span
+              class="text-xs text-center"
+              style="font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif"
+              >Rohan</span
+            >
           </div>
-          <div class="icon-item flex flex-col items-center w-16">
+          <div class="icon-item flex flex-col items-center w-16 select-none">
             <img
               src="./Assets/chrome.svg"
               alt="Chrome 4"
               class="w-12 h-12 mb-1"
             />
-            <span class="text-xs text-center">Shreejan</span>
+            <span
+              class="text-xs text-center"
+              style="font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif"
+              >Shreejan</span
+            >
           </div>
         </div>
       </div>
@@ -391,14 +545,27 @@
         }
       });
 
-      // Icon click selection
-      document.querySelectorAll(".icon-item").forEach((icon) => {
-        icon.addEventListener("click", () => {
-          document
-            .querySelectorAll(".icon-item")
-            .forEach((i) => i.classList.remove("selected"));
-          icon.classList.add("selected");
-        });
+      // Chatbot logic
+      const chatBtn = document.getElementById("chatBtn");
+      const chatModal = document.getElementById("chatModal");
+      const chatMessages = document.getElementById("chatMessages");
+      const chatInput = document.getElementById("chatInput");
+      const sendMsg = document.getElementById("sendMsg");
+
+      chatBtn.addEventListener("click", () => {
+        startMenu.classList.add("hidden");
+        chatModal.showModal();
+      });
+
+      sendMsg.addEventListener("click", () => {
+        const userMsg = chatInput.value.trim();
+        if (!userMsg) return;
+        chatMessages.innerHTML += `<div><strong>You:</strong> ${userMsg}</div>`;
+        chatInput.value = "";
+        setTimeout(() => {
+          chatMessages.innerHTML += `<div><strong>Bot:</strong> I'm here to help you with anything!</div>`;
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 500);
       });
     </script>
   </body>
