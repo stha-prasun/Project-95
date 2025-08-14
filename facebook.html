@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-1/5 bg-white h-screen p-4 space-y-4 border-r">
+            <div class="flex items-center space-x-2">
+                <img src="profile.jpg" alt="profile" class="w-10 h-10 rounded-full">
+                <span class="font-semibold">Shreejan Shrestha</span>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-blue-500 rounded-full"></span>Meta AI</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-blue-400 rounded-full"></span>Friends</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-blue-300 rounded-full"></span>Memories</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-purple-400 rounded-full"></span>Saved</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-blue-300 rounded-full"></span>Groups</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-blue-400 rounded-full"></span>Video</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-green-400 rounded-full"></span>Marketplace</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-blue-200 rounded-full"></span>Feeds</div>
+                <div class="flex items-center space-x-3"><span class="w-6 h-6 bg-red-400 rounded-full"></span>Events</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="w-3/5 p-4">
+            <!-- What's on your mind -->
+            <div class="bg-white rounded-lg p-4 shadow">
+                <input type="text" placeholder="What's on your mind, Shreejan?" class="w-full border rounded-full px-4 py-2">
+                <div class="flex justify-around mt-3">
+                    <button class="flex items-center space-x-2"><span class="bg-red-500 w-5 h-5 rounded-full"></span>Live Video</button>
+                    <button class="flex items-center space-x-2"><span class="bg-green-500 w-5 h-5 rounded-full"></span>Photo/Video</button>
+                    <button class="flex items-center space-x-2"><span class="bg-yellow-500 w-5 h-5 rounded-full"></span>Feeling/Activity</button>
+                </div>
+            </div>
+
+            <!-- Stories -->
+            <div class="flex space-x-3 mt-4 overflow-x-auto">
+                <div class="bg-white rounded-lg w-24 h-40 flex flex-col items-center justify-center shadow">
+                    <div class="w-16 h-16 bg-gray-300 rounded-lg"></div>
+                    <span class="text-sm mt-2">Create story</span>
+                </div>
+                <div class="w-24 h-40 bg-gray-200 rounded-lg"></div>
+                <div class="w-24 h-40 bg-gray-200 rounded-lg"></div>
+                <div class="w-24 h-40 bg-gray-200 rounded-lg"></div>
+            </div>
+
+            <!-- Post -->
+            <div class="bg-white rounded-lg p-4 mt-4 shadow">
+                <p class="font-semibold">Roshani Shrestha is with Kalpana Shrestha and 3 others</p>
+                <p class="text-sm text-gray-500">10 August at 08:23</p>
+                <p class="mt-2">Rice Weaning Ceremony ❤️ Vada ❤️❤️❤️</p>
+                <div class="grid grid-cols-2 gap-2 mt-2">
+                    <div class="bg-gray-300 h-40"></div>
+                    <div class="bg-gray-300 h-40"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contacts -->
+        <div class="w-1/5 bg-white h-screen p-4 border-l">
+            <p class="font-semibold mb-4">Contacts</p>
+            <div class="space-y-3">
+                <div class="flex items-center space-x-3"><span class="bg-blue-300 w-8 h-8 rounded-full"></span>Meta AI</div>
+                <div class="flex items-center space-x-3"><span class="bg-gray-400 w-8 h-8 rounded-full"></span>Shreemant Shrestha</div>
+                <div class="flex items-center space-x-3"><span class="bg-gray-400 w-8 h-8 rounded-full"></span>Kalpana Shrestha</div>
+                <div class="flex items-center space-x-3"><span class="bg-gray-400 w-8 h-8 rounded-full"></span>Sumina Sthapit</div>
+                <div class="flex items-center space-x-3"><span class="bg-gray-400 w-8 h-8 rounded-full"></span>Sa Tu</div>
+                <div class="flex items-center space-x-3"><span class="bg-gray-400 w-8 h-8 rounded-full"></span>Prizma Pradhan</div>
+                <div class="flex items-center space-x-3"><span class="bg-gray-400 w-8 h-8 rounded-full"></span>Aashika Maharjan</div>
+                <div class="flex items-center space-x-3"><span class="bg-gray-400 w-8 h-8 rounded-full"></span>Pree Tam</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
