@@ -15,6 +15,100 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #DAE0E6;
             color: #1c1c1c;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            width: 250px;
+            background-color: #fff;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            padding: 20px;
+            color: #1c1c1c;
+            border-right: 1px solid #edeff1;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #edeff1;
+        }
+
+        .reddit-logo {
+            width: 32px;
+            height: 32px;
+            background-color: #FF4500;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 8px;
+        }
+
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #1c1c1c;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            gap: 12px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: #f6f7f8;
+        }
+
+        .nav-item.active {
+            background-color: #0079d3;
+            color: white;
+        }
+
+        .nav-item-icon {
+            font-size: 20px;
+            width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-section {
+            margin-top: 30px;
+        }
+
+        .nav-section-title {
+            color: #878a8c;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            padding: 0 16px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            min-height: 100vh;
         }
 
         /* Header */
@@ -33,26 +127,6 @@
             display: flex;
             align-items: center;
             height: 48px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-
-        .reddit-logo {
-            width: 32px;
-            height: 32px;
-            background-color: #FF4500;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            margin-right: 8px;
         }
 
         .search-bar {
@@ -93,44 +167,7 @@
             color: #0079d3;
         }
 
-        /* Navigation */
-        .nav {
-            background-color: #fff;
-            border-bottom: 1px solid #edeff1;
-            padding: 0 20px;
-        }
-
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            height: 40px;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 0;
-        }
-
-        .nav-tab {
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #878a8c;
-            text-decoration: none;
-            border-bottom: 2px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .nav-tab.active {
-            color: #1c1c1c;
-            border-bottom-color: #0079d3;
-        }
-
-        /* Main Content */
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -180,46 +217,7 @@
         }
 
         .post-content {
-            display: flex;
-        }
-
-        .vote-section {
-            width: 40px;
-            padding: 8px 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f8f9fa;
-        }
-
-        .vote-btn {
-            width: 24px;
-            height: 24px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            color: #878a8c;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .vote-btn:hover {
-            background-color: #e9ecef;
-            border-radius: 2px;
-        }
-
-        .vote-score {
-            font-size: 12px;
-            font-weight: bold;
-            color: #1c1c1c;
-            margin: 4px 0;
-        }
-
-        .post-body {
-            flex: 1;
-            padding: 8px 16px 8px 0;
+            padding: 8px 16px;
         }
 
         .post-title {
@@ -259,9 +257,43 @@
         .post-footer {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 16px;
             font-size: 12px;
             color: #878a8c;
+            margin-top: 8px;
+        }
+
+        /* Vote Section - Now in footer */
+        .vote-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vote-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #878a8c;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+        }
+
+        .vote-btn:hover {
+            background-color: #f6f7f8;
+        }
+
+        .vote-score {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1c1c1c;
+            min-width: 30px;
+            text-align: center;
         }
 
         .post-action {
@@ -279,7 +311,7 @@
             background-color: #f6f7f8;
         }
 
-        /* Sidebar */
+        /* Right Sidebar */
         .sidebar {
             display: flex;
             flex-direction: column;
@@ -369,6 +401,19 @@
         }
 
         @media (max-width: 768px) {
+            .sidebar-nav {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .sidebar-nav.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
             .container {
                 grid-template-columns: 1fr;
                 padding: 10px;
@@ -385,66 +430,80 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <div class="reddit-logo">r</div>
-                <span style="font-weight: bold; font-size: 20px;">reddit</span>
-            </div>
-            
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Search Reddit">
-            </div>
-            
-            <div class="header-actions">
-                <a href="#" class="header-btn outline">Log In</a>
-                <a href="#" class="header-btn">Sign Up</a>
-            </div>
+    <!-- Left Sidebar Navigation -->
+    <nav class="sidebar-nav">
+        <div class="nav-logo">
+            <div class="reddit-logo">r</div>
+            <span style="font-weight: bold; font-size: 20px;">reddit</span>
         </div>
-    </header>
+        
+        <div class="nav-items">
+            <a href="#" class="nav-item">
+                <span class="nav-item-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="nav-item-icon">🔥</span>
+                <span>Popular</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-item-icon">📈</span>
+                <span>Rising</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-item-icon">🎲</span>
+                <span>Random</span>
+            </a>
+        </div>
 
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-content">
-            <div class="nav-tabs">
-                <a href="#" class="nav-tab active">
-                    🔥 Popular
-                </a>
-                <a href="#" class="nav-tab">
-                    🏠 Home
-                </a>
-                <a href="#" class="nav-tab">
-                    📈 Rising
-                </a>
-                <a href="#" class="nav-tab">
-                    🎲 Random
-                </a>
-            </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Custom Feeds</div>
+            <a href="#" class="nav-item">
+                <span class="nav-item-icon">➕</span>
+                <span>Create Custom Feed</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Recent</div>
+            <a href="#" class="nav-item">
+                <span class="nav-item-icon">👥</span>
+                <span>All</span>
+            </a>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container">
-        <main class="posts">
-            <!-- Post 1 -->
-            <article class="post">
-                <div class="post-header">
-                    <div class="post-meta">
-                        <a href="#" class="post-subreddit">r/funny</a>
-                        <span>•</span>
-                        <span>Posted by u/username123</span>
-                        <span>•</span>
-                        <span>3 hours ago</span>
-                    </div>
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search Reddit">
                 </div>
-                <div class="post-content">
-                    <div class="vote-section">
-                        <button class="vote-btn">▲</button>
-                        <div class="vote-score">15.2k</div>
-                        <button class="vote-btn">▼</button>
+                
+                <div class="header-actions">
+                    <a href="#" class="header-btn outline">Log In</a>
+                    <a href="#" class="header-btn">Sign Up</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Container -->
+        <div class="container">
+            <main class="posts">
+                <!-- Post 1 -->
+                <article class="post">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <a href="#" class="post-subreddit">r/funny</a>
+                            <span>•</span>
+                            <span>Posted by u/username123</span>
+                            <span>•</span>
+                            <span>3 hours ago</span>
+                        </div>
                     </div>
-                    <div class="post-body">
+                    <div class="post-content">
                         <h3 class="post-title">
                             <a href="#">My cat discovered the printer and now thinks it's a monster that needs to be defeated daily</a>
                         </h3>
@@ -454,93 +513,87 @@
                             </div>
                         </div>
                         <div class="post-footer">
+                            <div class="vote-section">
+                                <button class="vote-btn">▲</button>
+                                <div class="vote-score">15.2k</div>
+                                <button class="vote-btn">▼</button>
+                            </div>
                             <a href="#" class="post-action">💬 1,234 Comments</a>
                             <a href="#" class="post-action">🔗 Share</a>
                             <a href="#" class="post-action">💾 Save</a>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <!-- Post 2 -->
-            <article class="post">
-                <div class="post-header">
-                    <div class="post-meta">
-                        <a href="#" class="post-subreddit">r/todayilearned</a>
-                        <span>•</span>
-                        <span>Posted by u/factlover</span>
-                        <span>•</span>
-                        <span>5 hours ago</span>
+                <!-- Post 2 -->
+                <article class="post">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <a href="#" class="post-subreddit">r/todayilearned</a>
+                            <span>•</span>
+                            <span>Posted by u/factlover</span>
+                            <span>•</span>
+                            <span>5 hours ago</span>
+                        </div>
                     </div>
-                </div>
-                <div class="post-content">
-                    <div class="vote-section">
-                        <button class="vote-btn">▲</button>
-                        <div class="vote-score">8.7k</div>
-                        <button class="vote-btn">▼</button>
-                    </div>
-                    <div class="post-body">
+                    <div class="post-content">
                         <h3 class="post-title">
                             <a href="#">TIL that octopuses have three hearts and blue blood, and two of their hearts stop beating when they swim</a>
                         </h3>
                         <p class="post-text">This is why octopuses prefer crawling rather than swimming, as swimming exhausts them quickly due to the reduced heart function...</p>
                         <div class="post-footer">
+                            <div class="vote-section">
+                                <button class="vote-btn">▲</button>
+                                <div class="vote-score">8.7k</div>
+                                <button class="vote-btn">▼</button>
+                            </div>
                             <a href="#" class="post-action">💬 892 Comments</a>
                             <a href="#" class="post-action">🔗 Share</a>
                             <a href="#" class="post-action">💾 Save</a>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <!-- Post 3 -->
-            <article class="post">
-                <div class="post-header">
-                    <div class="post-meta">
-                        <a href="#" class="post-subreddit">r/AskReddit</a>
-                        <span>•</span>
-                        <span>Posted by u/curious_mind</span>
-                        <span>•</span>
-                        <span>7 hours ago</span>
+                <!-- Post 3 -->
+                <article class="post">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <a href="#" class="post-subreddit">r/AskReddit</a>
+                            <span>•</span>
+                            <span>Posted by u/curious_mind</span>
+                            <span>•</span>
+                            <span>7 hours ago</span>
+                        </div>
                     </div>
-                </div>
-                <div class="post-content">
-                    <div class="vote-section">
-                        <button class="vote-btn">▲</button>
-                        <div class="vote-score">23.1k</div>
-                        <button class="vote-btn">▼</button>
-                    </div>
-                    <div class="post-body">
+                    <div class="post-content">
                         <h3 class="post-title">
                             <a href="#">What's the most useless superpower you can think of?</a>
                         </h3>
                         <div class="post-footer">
+                            <div class="vote-section">
+                                <button class="vote-btn">▲</button>
+                                <div class="vote-score">23.1k</div>
+                                <button class="vote-btn">▼</button>
+                            </div>
                             <a href="#" class="post-action">💬 5,671 Comments</a>
                             <a href="#" class="post-action">🔗 Share</a>
                             <a href="#" class="post-action">💾 Save</a>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <!-- Post 4 -->
-            <article class="post">
-                <div class="post-header">
-                    <div class="post-meta">
-                        <a href="#" class="post-subreddit">r/mildlyinteresting</a>
-                        <span>•</span>
-                        <span>Posted by u/observant_user</span>
-                        <span>•</span>
-                        <span>9 hours ago</span>
+                <!-- Post 4 -->
+                <article class="post">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <a href="#" class="post-subreddit">r/mildlyinteresting</a>
+                            <span>•</span>
+                            <span>Posted by u/observant_user</span>
+                            <span>•</span>
+                            <span>9 hours ago</span>
+                        </div>
                     </div>
-                </div>
-                <div class="post-content">
-                    <div class="vote-section">
-                        <button class="vote-btn">▲</button>
-                        <div class="vote-score">12.4k</div>
-                        <button class="vote-btn">▼</button>
-                    </div>
-                    <div class="post-body">
+                    <div class="post-content">
                         <h3 class="post-title">
                             <a href="#">This tree grew around a stop sign and now it looks like nature is telling us to stop</a>
                         </h3>
@@ -550,87 +603,92 @@
                             </div>
                         </div>
                         <div class="post-footer">
+                            <div class="vote-section">
+                                <button class="vote-btn">▲</button>
+                                <div class="vote-score">12.4k</div>
+                                <button class="vote-btn">▼</button>
+                            </div>
                             <a href="#" class="post-action">💬 456 Comments</a>
                             <a href="#" class="post-action">🔗 Share</a>
                             <a href="#" class="post-action">💾 Save</a>
                         </div>
                     </div>
-                </div>
-            </article>
-        </main>
+                </article>
+            </main>
 
-        <aside class="sidebar">
-            <!-- Trending -->
-            <div class="sidebar-card">
-                <div class="sidebar-header">
-                    Today's Top Growing Communities
+            <aside class="sidebar">
+                <!-- Trending -->
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        Today's Top Growing Communities
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="trending-item">
+                            <div class="trending-number">1</div>
+                            <div class="trending-content">
+                                <div class="trending-subreddit">r/space</div>
+                                <div class="trending-title">James Webb telescope discoveries</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-number">2</div>
+                            <div class="trending-content">
+                                <div class="trending-subreddit">r/programming</div>
+                                <div class="trending-title">New JavaScript framework debate</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-number">3</div>
+                            <div class="trending-content">
+                                <div class="trending-subreddit">r/cooking</div>
+                                <div class="trending-title">Summer recipe megathread</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-number">4</div>
+                            <div class="trending-content">
+                                <div class="trending-subreddit">r/cats</div>
+                                <div class="trending-title">International Cat Day celebrations</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="sidebar-content">
-                    <div class="trending-item">
-                        <div class="trending-number">1</div>
-                        <div class="trending-content">
-                            <div class="trending-subreddit">r/space</div>
-                            <div class="trending-title">James Webb telescope discoveries</div>
-                        </div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-number">2</div>
-                        <div class="trending-content">
-                            <div class="trending-subreddit">r/programming</div>
-                            <div class="trending-title">New JavaScript framework debate</div>
-                        </div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-number">3</div>
-                        <div class="trending-content">
-                            <div class="trending-subreddit">r/cooking</div>
-                            <div class="trending-title">Summer recipe megathread</div>
-                        </div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-number">4</div>
-                        <div class="trending-content">
-                            <div class="trending-subreddit">r/cats</div>
-                            <div class="trending-title">International Cat Day celebrations</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Premium -->
-            <div class="sidebar-card premium-card">
-                <div class="premium-title">Reddit Premium</div>
-                <div class="premium-desc">The best Reddit experience, with monthly Coins</div>
-                <button class="premium-btn">Try Now</button>
-            </div>
+                <!-- Premium -->
+                <div class="sidebar-card premium-card">
+                    <div class="premium-title">Reddit Premium</div>
+                    <div class="premium-desc">The best Reddit experience, with monthly Coins</div>
+                    <button class="premium-btn">Try Now</button>
+                </div>
 
-            <!-- Recent Posts -->
-            <div class="sidebar-card">
-                <div class="sidebar-header">
-                    Recent Posts
+                <!-- Recent Posts -->
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        Recent Posts
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="trending-item">
+                            <div class="trending-content">
+                                <div class="trending-subreddit">r/worldnews</div>
+                                <div class="trending-title">Breaking: Major climate summit begins</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-content">
+                                <div class="trending-subreddit">r/technology</div>
+                                <div class="trending-title">AI breakthrough in medical diagnosis</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-content">
+                                <div class="trending-subreddit">r/science</div>
+                                <div class="trending-title">New species discovered in deep ocean</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="sidebar-content">
-                    <div class="trending-item">
-                        <div class="trending-content">
-                            <div class="trending-subreddit">r/worldnews</div>
-                            <div class="trending-title">Breaking: Major climate summit begins</div>
-                        </div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-content">
-                            <div class="trending-subreddit">r/technology</div>
-                            <div class="trending-title">AI breakthrough in medical diagnosis</div>
-                        </div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-content">
-                            <div class="trending-subreddit">r/science</div>
-                            <div class="trending-title">New species discovered in deep ocean</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </aside>
+            </aside>
+        </div>
     </div>
 
     <script>
@@ -672,11 +730,11 @@
             }
         });
 
-        // Navigation tab switching
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', function(e) {
+        // Navigation item switching
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
                 e.preventDefault();
-                document.querySelector('.nav-tab.active').classList.remove('active');
+                document.querySelector('.nav-item.active').classList.remove('active');
                 this.classList.add('active');
             });
         });
