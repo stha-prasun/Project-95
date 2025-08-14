@@ -1,11 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    
+<body class="bg-black text-white">
+
+  <!-- Main Container -->
+  <div class="flex min-h-screen">
+
+    <!-- Left Sidebar -->
+    <div class="w-16 md:w-64 border-r border-gray-800 p-4 flex flex-col gap-6">
+      <h1 class="text-2xl font-bold hidden md:block">Instagram</h1>
+      <nav class="flex flex-col gap-4 text-sm">
+        <a href="#" class="hover:text-gray-400">Home</a>
+        <a href="#" class="hover:text-gray-400">Search</a>
+        <a href="#" class="hover:text-gray-400">Explore</a>
+        <a href="#" class="hover:text-gray-400">Reels</a>
+        <a href="#" class="hover:text-gray-400">Messages</a>
+        <a href="#" class="hover:text-gray-400">Notifications</a>
+        <a href="#" class="hover:text-gray-400">Create</a>
+        <a href="#" class="hover:text-gray-400">Profile</a>
+      </nav>
+    </div>
+
+    <!-- Feed -->
+    <div class="flex-1 flex flex-col items-center p-6">
+      
+      <!-- Stories -->
+      <div class="flex gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full border-2 border-pink-500"></div>
+        <div class="w-16 h-16 rounded-full border-2 border-pink-500"></div>
+        <div class="w-16 h-16 rounded-full border-2 border-pink-500"></div>
+        <div class="w-16 h-16 rounded-full border-2 border-pink-500"></div>
+      </div>
+
+      <!-- Post Card -->
+      <div class="bg-gray-900 w-full max-w-md rounded-lg overflow-hidden">
+        <div class="p-4 font-bold">routineofnepalbanda</div>
+        <img src="https://via.placeholder.com/500x500" alt="Post" class="w-full">
+        <div class="p-4">
+          <p class="text-sm">
+            <span class="font-bold">routineofnepalbanda</span> More than 11,000 Students have applied for IOE Engineering Entrance Examination which is starting from Bhadra 3.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="hidden lg:block w-72 p-4">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 rounded-full bg-gray-600"></div>
+        <div>
+          <p class="font-bold">pramish_devkota</p>
+          <p class="text-sm text-gray-400">:-P</p>
+        </div>
+      </div>
+      <h3 class="font-bold mb-4">Suggested for you</h3>
+      <div class="flex justify-between items-center mb-2">
+        <p>strawberie_xo</p>
+        <a href="#" class="text-blue-500 text-sm">Follow</a>
+      </div>
+      <div class="flex justify-between items-center mb-2">
+        <p>sth_unishaa_</p>
+        <a href="#" class="text-blue-500 text-sm">Follow</a>
+      </div>
+    </div>
+
+  </div>
+
 </body>
 </html>
