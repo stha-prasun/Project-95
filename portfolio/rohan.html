@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rohan Shrestha</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              vt: [
+                "VT323",
+                "ui-monospace",
+                "SFMono-Regular",
+                "Menlo",
+                "monospace",
+              ],
+            },
+            colors: {
+              neon: {
+                green: "#39FF14",
+                pink: "#ff3df0",
+                blue: "#00E5FF",
+                amber: "#FFC300",
+              },
+              crt: {
+                bg: "#0a0f14",
+                panel: "#0f1720",
+              },
+            },
+            boxShadow: {
+              glow: "0 0 10px rgba(57,255,20,0.6), 0 0 30px rgba(57,255,20,0.25)",
+              card: "0 0 12px rgba(0,229,255,0.25)",
+            },
+            keyframes: {
+              flicker: {
+                "0%,100%": { opacity: 1 },
+                "41.99%": { opacity: 1 },
+                "42%": { opacity: 0.8 },
+                "43%": { opacity: 1 },
+                "78%": { opacity: 1 },
+                "78.5%": { opacity: 0.7 },
+                "79%": { opacity: 1 },
+              },
+              scroll: {
+                "0%": { transform: "translateX(100%)" },
+                "100%": { transform: "translateX(-100%)" },
+              },
+            },
+            animation: {
+              flicker: "flicker 6s infinite",
+              scroll: "scroll 20s linear infinite",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Subtle scanlines + vignette for CRT feel */
+      .crt {
+        position: relative;
+        isolation: isolate;
+      }
+      .crt::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.04) 0px,
+          rgba(255, 255, 255, 0.04) 1px,
+          transparent 2px,
+          transparent 3px
+        );
+        pointer-events: none;
+        z-index: 10;
+        mix-blend-mode: overlay;
+      }
+      .crt::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 40%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
+        pointer-events: none;
+        z-index: 11;
+      }
+      /* Neon divider */
+      .neon-line {
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #39ff14, transparent);
+        filter: drop-shadow(0 0 6px #39ff14);
+      }
+      /* Retro button bevel */
+      .bevel {
+        box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -2px 0 rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 229, 255, 0.25);
+      }
+      /* Grid background for hero */
+      .grid-bg {
+        background: radial-gradient(
+            circle at 50% 0%,
+            rgba(0, 229, 255, 0.25),
+            transparent 60%
+          ),
+          linear-gradient(#00e5ff33 1px, transparent 1px),
+          linear-gradient(90deg, #00e5ff33 1px, transparent 1px);
+        background-size: 100% 100%, 100% 24px, 24px 100%;
+        background-position: center center, 0 0, 0 0;
+      }
+    </style>
+  </head>
+
+  <body class="bg-crt-bg text-white font-vt crt">
+    <!-- Top marquee -->
+    <div class="w-full overflow-hidden border-b border-cyan-500/40 bg-black/40">
+      <div
+        class="whitespace-nowrap py-1 animate-scroll text-neon-blue text-xl tracking-widest"
+      >
+        <span class="mx-8">WELCOME_</span>
+        <span class="mx-8">USER: ROHAN_SHRESTHA</span>
+        <span class="mx-8">FULL-STACK PORTFOLIO</span>
+        <span class="mx-8">Coding</span>
+      </div>
+    </div>
+
+    <!-- Navbar -->
+    <header
+      class="sticky top-0 z-50 backdrop-blur bg-black/40 border-b border-cyan-500/30"
+    >
+      <nav
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between"
+      >
+        <a href="#" class="text-neon-green text-2xl drop-shadow">RS_</a>
+        <div class="hidden md:flex gap-6 text-xl">
+          <a href="#about" class="hover:text-neon-blue">ABOUT</a>
+          <a href="#skills" class="hover:text-neon-blue">SKILLS</a>
+          <a href="#contact" class="hover:text-neon-pink">CONTACT</a>
+        </div>
+        <button
+          id="menuBtn"
+          class="md:hidden px-3 py-1 border border-cyan-400/50 rounded bevel"
+        >
+          MENU
+        </button>
+      </nav>
+      <div
+        id="mobileMenu"
+        class="md:hidden hidden border-t border-cyan-500/30 bg-black/70"
+      >
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3 text-xl">
+          <a href="#about" class="hover:text-neon-blue">ABOUT</a>
+          <a href="#skills" class="hover:text-neon-blue">SKILLS</a>
+          <a href="#contact" class="hover:text-neon-pink">CONTACT</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="grid-bg relative">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <div class="grid lg:grid-cols-2 gap-10 items-center">
+          <div class="space-y-6">
+            <h1
+              class="text-5xl lg:text-7xl leading-none text-neon-green drop-shadow animate-flicker"
+            >
+              &lt;Hello, World!!/&gt;
+            </h1>
+            <p class="text-2xl text-cyan-100/90">
+              I’m <span class="text-neon-pink">Rohan Shrestha</span> —
+              Fullstack Developer
+            </p>
+            <div class="neon-line my-4"></div>
+            <div class="flex flex-wrap gap-4">
+              
+              <a
+                href="#contact"
+                class="px-6 py-2 text-2xl border border-neon-pink rounded bevel hover:translate-y-[-2px] transition"
+              >
+                CONTACT
+              </a>
+              <a
+                href="#about"
+                class="px-6 py-2 text-2xl border border-neon-blue rounded bevel hover:translate-y-[-2px] transition"
+              >
+                ABOUT
+              </a>
+            </div>
+          </div>
+          <div class="relative">
+            <div
+              class="aspect-square rounded-2xl border border-cyan-400/50 p-1 shadow-card"
+            >
+              <div
+                class="h-full w-full rounded-2xl bg-gradient-to-br from-cyan-900/40 to-fuchsia-900/30 grid place-items-center"
+              >
+                <div class="text-center p-6">
+                  <div class="text-8xl">🕹️</div>
+                  <p class="mt-4 text-xl opacity-90">#include&lt;life.h&gt;</p>
+                  <p class="mt-2 text-neon-amber text-2xl">— Dev Motto</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="absolute -inset-2 -z-10 blur-xl opacity-50 bg-gradient-to-r from-neon-blue via-neon-pink to-neon-green rounded-3xl"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section
+      id="about"
+      class="py-16 lg:py-20 border-t border-cyan-500/20 bg-black/40"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl lg:text-5xl text-neon-blue mb-6">ABOUT_ME</h2>
+        <div class="grid lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2 space-y-4 text-xl leading-7">
+            <p>
+              I’m a full-stack developer focused on building crisp, resilient
+              experiences with React, Node, and a sprinkle of old-school flair.
+              I love performance tuning, clean architecture, and playful touches
+              that spark joy.
+            </p>
+            <div class="neon-line"></div>
+            <ul class="grid sm:grid-cols-2 gap-2">
+              <li class="flex items-center gap-2">
+                <span class="text-neon-green">▮</span> Based: Kathmandu, NP
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-neon-green">▮</span> Stack: React • Node •
+                MongoDB
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-neon-green">▮</span> Interests: Web
+                Development
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-neon-green">▮</span> Status: Open to roles &
+                collabs
+              </li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <div class="border border-neon-blue/40 rounded-xl p-4 shadow-card">
+              <div class="text-2xl mb-2 text-neon-amber">CONTACT CARD</div>
+              <div class="text-lg opacity-90">
+                <div>
+                  Email:
+                  <a
+                    class="text-neon-green underline"
+                    href="mailto:rohanshrestha612@gmail.com"
+                    >rohanshrestha612@gmail.com</a
+                  >
+                </div>
+                <div>
+                  GitHub:
+                  <a
+                    class="text-neon-green underline"
+                    href="https://github.com/rohan101"
+                    target="_blank"
+                    >https://github.com/rohan101</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="border border-neon-pink/40 rounded-xl p-4">
+              <div class="text-xl">Fun Fact</div>
+              <div class="text-lg opacity-90">I don't collect old coins.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+   
+
+    <!-- Skills -->
+    <section
+      id="skills"
+      class="py-16 lg:py-20 border-y border-cyan-500/20 bg-black/40"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl lg:text-5xl text-neon-blue mb-8">SKILLS+</h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="border border-neon-green/40 rounded-2xl p-4">
+            <div class="text-2xl mb-2 text-neon-green">Frontend</div>
+            <ul class="space-y-1 text-lg">
+              <li>TypeScript</li>
+              <li>Tailwind CSS</li>
+              <li>Next.js</li>
+            </ul>
+          </div>
+          <div class="border border-neon-blue/40 rounded-2xl p-4">
+            <div class="text-2xl mb-2 text-neon-blue">Backend</div>
+            <ul class="space-y-1 text-lg">
+              <li>MongoDB</li>
+            </ul>
+          </div>
+          <div class="border border-neon-pink/40 rounded-2xl p-4">
+            <div class="text-2xl mb-2 text-neon-pink">Tools</div>
+            <ul class="space-y-1 text-lg">
+              <li>Git & GitHub</li>
+              <li>Figma</li>
+              <li>Microsoft Tools</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section
+      id="contact"
+      class="py-16 lg:py-20 border-t border-cyan-500/20 bg-black/40"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl lg:text-5xl text-neon-pink mb-6">CONTACT_ME</h2>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+          <form
+            action="#"
+            class="space-y-4 border border-cyan-400/40 rounded-2xl p-6 shadow-card"
+          >
+            <div>
+              <label class="block text-xl mb-1">Name</label>
+              <input
+                type="text"
+                placeholder="Your name"
+                class="w-full bg-crt-panel/70 border border-cyan-500/30 rounded px-3 py-2 outline-none focus:border-neon-blue"
+              />
+            </div>
+            <div>
+              <label class="block text-xl mb-1">Email</label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                class="w-full bg-crt-panel/70 border border-cyan-500/30 rounded px-3 py-2 outline-none focus:border-neon-blue"
+              />
+            </div>
+            <div>
+              <label class="block text-xl mb-1">Message</label>
+              <textarea
+                rows="5"
+                placeholder="Tell me about your project…"
+                class="w-full bg-crt-panel/70 border border-cyan-500/30 rounded px-3 py-2 outline-none focus:border-neon-blue"
+              ></textarea>
+            </div>
+            <button
+              class="px-6 py-2 text-2xl border border-neon-green rounded bevel shadow-glow hover:translate-y-[-2px] transition"
+            >
+              SEND
+            </button>
+          </form>
+
+          <div class="space-y-4">
+            <div class="border border-neon-amber/40 rounded-2xl p-6">
+              <div class="text-2xl mb-2 text-neon-amber">Server Status</div>
+              <ul class="text-lg opacity-90 list-disc list-inside">
+                <li>API: Online</li>
+                <li>Database: Online</li>
+                <li>Cache: Online</li>
+              </ul>
+            </div>
+            <div class="border border-neon-blue/40 rounded-2xl p-6">
+              <div class="text-2xl mb-2 text-neon-blue">Now Playing</div>
+              <p class="text-lg opacity-90">Hari Bansa Acharya: Hamri Aama sarai nai bathi chan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-cyan-500/20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="text-neon-green text-xl">
+          © <span id="year"></span> Rohan Shrestha
+        </div>
+        <div class="opacity-80">
+          Built with HTML + Tailwind • Retro vibes only
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      document.getElementById("menuBtn").addEventListener("click", () => {
+        document.getElementById("mobileMenu").classList.toggle("hidden");
+      });
+      // Year
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
