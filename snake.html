@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Snake — Tailwind + JS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      html, body { height: 100%; }
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      canvas { image-rendering: pixelated; }
+      /* Simple focus ring for keyboard users */
+      .focus-ring:focus { outline: 2px solid #60a5fa; outline-offset: 2px; }
+    </style>
+  </head>
+  <body class="min-h-full bg-slate-950 text-slate-100">
+    <main class="max-w-3xl mx-auto px-4 py-10 flex flex-col items-center gap-6">
+      <header class="text-center">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">Snake</h1>
+        <p class="text-slate-400 mt-1">Arrow Keys / WASD to move • P to pause • R to restart</p>
+      </header>
+
+      <section class="w-full grid grid-cols-1 lg:grid-cols-[auto,1fr] gap-6">
+        <!-- Game Panel -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-col items-center gap-4">
+          <div class="flex items-center gap-4">
+            <div class="px-3 py-1 rounded-xl bg-slate-800/70 border border-slate-700 text-sm">
+              Score: <span id="score" class="font-semibold">0</span>
+            </div>
+            <div class="px-3 py-1 rounded-xl bg-slate-800/70 border border-slate-700 text-sm">
+              Best: <span id="best" class="font-semibold">0</span>
+            </div>
+            <div class="px-3 py-1 rounded-xl bg-slate-800/70 border border-slate-700 text-sm hidden sm:inline-block">
+              Speed: <span id="speedLabel" class="font-semibold">Normal</span>
+            </div>
+          </div>
+
+          <div class="relative">
+            <canvas id="board" width="480" height="480" class="rounded-2xl border border-slate-800 bg-slate-950"></canvas>
+
+            <!-- Mobile controls -->
+            <div class="sm:hidden mt-3 grid grid-cols-3 gap-2 text-slate-100 select-none">
+              <div></div>
+              <button id="btn-up" class="focus-ring rounded-xl bg-slate-800/70 border border-slate-700 px-4 py-2">▲</button>
+              <div></div>
+              <button id="btn-left" class="focus-ring rounded-xl bg-slate-800/70 border border-slate-700 px-4 py-2">◀</button>
+              <button id="btn-down" class="focus-ring rounded-xl bg-slate-800/70 border border-slate-700 px-4 py-2">▼</button>
+              <button id="btn-right" class="focus-ring rounded-xl bg-slate-800/70 border border-slate-700 px-4 py-2">▶</button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button id="toggleBtn" class="focus-ring px-4 py-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-semibold shadow">
+              Start
+            </button>
+            <button id="restartBtn" class="focus-ring px-4 py-2 rounded-2xl bg-slate-200 hover:bg-white text-slate-900 font-semibold shadow">
+              Restart (R)
+            </button>
+            <label class="flex items-center gap-2 text-sm bg-slate-800/70 border border-slate-700 px-3 py-2 rounded-xl">
+              Speed
+              <select id="speed" class="bg-slate-800/70 outline-none">
+                <option value="120">Slow</option>
+                <option value="90" selected>Normal</option>
+                <option value="60">Fast</option>
+                <option value="45">Faster</option>
+                <option value="30">Insane</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <!-- Help / Info -->
+        <aside class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+          <h2 class="text-xl font-bold">How to Play</h2>
+          <ul class="list-disc pl-5 text-slate-300 space-y-1">
+            <li>Use <span class="font-semibold">Arrow Keys</span> or <span class="font-semibold">W/A/S/D</span> to move.</li>
+            <li>Eat the glowing food to grow and score points.</li>
+            <li>Avoid hitting the walls or yourself.</li>
+            <li>Press <span class="font-semibold">P</span> to pause/resume, <span class="font-semibold">R</span> to restart.</li>
+          </ul>
+          <p class="text-slate-400 text-sm">Tip: Change speed to increase the challenge. High score is saved locally.</p>
+        </aside>
+      </section>
+
+      <footer class="text-center text-slate-500 text-xs">Built with Tailwind CSS + Vanilla JS</footer>
+    </main>
+
+    <script>
+      // ===== Config =====
+      const GRID = 24;               // grid size (cells per row/col)
+      const STEP_DEFAULT = 90;       // ms per tick (overwritten by select)
+
+      // ===== State =====
+      const canvas = document.getElementById('board');
+      const ctx = canvas.getContext('2d');
+      let tile; // computed from canvas size
+
+      let snake, dir, nextDir, food, score, best, tickMs, alive, paused, loopId;
+
+      const $score = document.getElementById('score');
+      const $best = document.getElementById('best');
+      const $speed = document.getElementById('speed');
+      const $speedLabel = document.getElementById('speedLabel');
+      const $toggle = document.getElementById('toggleBtn');
+      const $restart = document.getElementById('restartBtn');
+
+      const $up = document.getElementById('btn-up');
+      const $down = document.getElementById('btn-down');
+      const $left = document.getElementById('btn-left');
+      const $right = document.getElementById('btn-right');
+
+      function speedLabel(ms){
+        if(ms <= 30) return 'Insane';
+        if(ms <= 45) return 'Faster';
+        if(ms <= 60) return 'Fast';
+        if(ms <= 90) return 'Normal';
+        return 'Slow';
+      }
+
+      function init() {
+        // Responsive canvas: keep square, max 520px, min 300px
+        const size = Math.min(520, Math.max(300, Math.min(window.innerWidth - 40, 520)));
+        canvas.width = canvas.height = size;
+        tile = Math.floor(size / GRID);
+
+        best = Number(localStorage.getItem('snake-best') || 0);
+        $best.textContent = best;
+
+        reset();
+      }
+
+      function reset() {
+        // Center start
+        const mid = Math.floor(GRID / 2);
+        snake = [ {x: mid, y: mid}, {x: mid-1, y: mid}, {x: mid-2, y: mid} ];
+        dir = {x: 1, y: 0};
+        nextDir = {x: 1, y: 0};
+        score = 0;
+        $score.textContent = score;
+        tickMs = Number($speed.value) || STEP_DEFAULT;
+        $speedLabel.textContent = speedLabel(tickMs);
+        alive = true;
+        paused = true;
+        placeFood();
+        draw();
+        stopLoop();
+        $toggle.textContent = 'Start';
+      }
+
+      function startLoop(){
+        if(loopId) return; // already running
+        paused = false;
+        $toggle.textContent = 'Pause';
+        loopId = setInterval(tick, tickMs);
+      }
+
+      function stopLoop(){
+        clearInterval(loopId);
+        loopId = null;
+        paused = true;
+      }
+
+      function togglePause(){
+        if(!alive){ reset(); startLoop(); return; }
+        if(paused) startLoop(); else { stopLoop(); $toggle.textContent = 'Resume'; }
+      }
+
+      function placeFood(){
+        // Place on a free cell
+        const free = [];
+        for(let y=0; y<GRID; y++){
+          for(let x=0; x<GRID; x++){
+            if(!snake.some(s => s.x===x && s.y===y)) free.push({x,y});
+          }
+        }
+        food = free[Math.floor(Math.random()*free.length)];
+      }
+
+      function tick(){
+        if(!alive || paused) return;
+        // Apply buffered direction (prevents reversing on same tick)
+        if(Math.abs(nextDir.x) !== Math.abs(dir.x) || Math.abs(nextDir.y) !== Math.abs(dir.y)){
+          dir = nextDir;
+        }
+
+        const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+        // Collisions: walls
+        if(head.x < 0 || head.y < 0 || head.x >= GRID || head.y >= GRID){
+          return gameOver();
+        }
+        // Collisions: self
+        if(snake.some(seg => seg.x === head.x && seg.y === head.y)){
+          return gameOver();
+        }
+
+        snake.unshift(head);
+
+        // Eat
+        if(head.x === food.x && head.y === food.y){
+          score++;
+          $score.textContent = score;
+          if(score > best){
+            best = score; localStorage.setItem('snake-best', String(best));
+            $best.textContent = best;
+          }
+          placeFood();
+        } else {
+          snake.pop();
+        }
+
+        draw();
+      }
+
+      function gameOver(){
+        alive = false;
+        stopLoop();
+        draw();
+        $toggle.textContent = 'Play Again';
+      }
+
+      function drawGrid(){
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        // board background
+        ctx.fillStyle = '#0b1220';
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+
+        // subtle grid
+        ctx.strokeStyle = 'rgba(148,163,184,0.12)';
+        ctx.lineWidth = 1;
+        for(let i=0; i<=GRID; i++){
+          const p = i*tile + 0.5;
+          ctx.beginPath();
+          ctx.moveTo(p, 0); ctx.lineTo(p, GRID*tile);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(0, p); ctx.lineTo(GRID*tile, p);
+          ctx.stroke();
+        }
+      }
+
+      function roundedRect(x,y,w,h,r){
+        const rr = Math.min(r, w/2, h/2);
+        ctx.beginPath();
+        ctx.moveTo(x+rr,y);
+        ctx.arcTo(x+w,y,x+w,y+h,rr);
+        ctx.arcTo(x+w,y+h,x,y+h,rr);
+        ctx.arcTo(x,y+h,x,y,rr);
+        ctx.arcTo(x,y,x+w,y,rr);
+        ctx.closePath();
+      }
+
+      function drawSnake(){
+        // body
+        for(let i=snake.length-1; i>=0; i--){
+          const {x,y} = snake[i];
+          const px = x*tile, py = y*tile;
+          const t = i / Math.max(1, snake.length-1); // gradient along body
+          const hue = 160 - t*40; // teal -> green
+          ctx.fillStyle = `hsl(${hue} 80% ${40 + t*10}% / 1)`;
+          roundedRect(px+2, py+2, tile-4, tile-4, 6);
+          ctx.fill();
+        }
+      }
+
+      function drawFood(){
+        const {x,y} = food;
+        const px = x*tile, py = y*tile;
+        // glow
+        const g = ctx.createRadialGradient(px+tile/2, py+tile/2, 2, px+tile/2, py+tile/2, tile);
+        g.addColorStop(0, 'rgba(16,185,129,0.8)');
+        g.addColorStop(1, 'rgba(16,185,129,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(px, py, tile, tile);
+        // core
+        ctx.fillStyle = '#22c55e';
+        roundedRect(px+4, py+4, tile-8, tile-8, 6);
+        ctx.fill();
+      }
+
+      function drawOverlay(){
+        if(paused || !alive){
+          ctx.save();
+          ctx.fillStyle = 'rgba(2,6,23,0.65)';
+          ctx.fillRect(0,0,canvas.width, canvas.height);
+          ctx.fillStyle = '#e2e8f0';
+          ctx.font = '700 28px Inter, system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const msg = alive ? 'Paused' : 'Game Over';
+          ctx.fillText(msg, canvas.width/2, canvas.height/2 - 14);
+          ctx.font = '500 16px Inter, system-ui, sans-serif';
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillText('Press P to resume • R to restart', canvas.width/2, canvas.height/2 + 14);
+          ctx.restore();
+        }
+      }
+
+      function draw(){
+        drawGrid();
+        drawFood();
+        drawSnake();
+        drawOverlay();
+      }
+
+      // ===== Input =====
+      function setDirection(nx, ny){
+        // prevent reversing directly
+        if(nx === -dir.x && ny === -dir.y) return;
+        nextDir = {x: nx, y: ny};
+      }
+
+      window.addEventListener('keydown', (e) => {
+        const k = e.key.toLowerCase();
+        if(['arrowup','w'].includes(k)) { setDirection(0,-1); e.preventDefault(); }
+        else if(['arrowdown','s'].includes(k)) { setDirection(0,1); e.preventDefault(); }
+        else if(['arrowleft','a'].includes(k)) { setDirection(-1,0); e.preventDefault(); }
+        else if(['arrowright','d'].includes(k)) { setDirection(1,0); e.preventDefault(); }
+        else if(k === 'p') { togglePause(); }
+        else if(k === 'r') { reset(); startLoop(); }
+      });
+
+      // Buttons
+      $toggle.addEventListener('click', togglePause);
+      $restart.addEventListener('click', () => { reset(); startLoop(); });
+      $speed.addEventListener('change', () => {
+        tickMs = Number($speed.value);
+        $speedLabel.textContent = speedLabel(tickMs);
+        if(loopId){ stopLoop(); startLoop(); }
+      });
+
+      // Mobile buttons
+      $up?.addEventListener('click', () => setDirection(0,-1));
+      $down?.addEventListener('click', () => setDirection(0,1));
+      $left?.addEventListener('click', () => setDirection(-1,0));
+      $right?.addEventListener('click', () => setDirection(1,0));
+
+      // Resize handling to keep canvas crisp
+      window.addEventListener('resize', () => {
+        const running = !!loopId;
+        const oldTile = tile;
+        const oldSnake = snake.map(s => ({...s}));
+        const oldFood = {...food};
+        const oldDir = {...dir};
+        const oldNext = {...nextDir};
+        const oldScore = score;
+        const oldAlive = alive;
+        const oldPaused = paused;
+        stopLoop();
+        init();
+        // attempt to preserve state after resize
+        snake = oldSnake; food = oldFood; dir = oldDir; nextDir = oldNext; score = oldScore; alive = oldAlive; paused = oldPaused;
+        $score.textContent = score; $best.textContent = best;
+        draw();
+        if(running && alive && !paused) startLoop();
+      });
+
+      // Start
+      init();
+    </script>
+  </body>
+</html>
