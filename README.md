@@ -146,6 +146,8 @@ The Camera and Gallery applications provide webcam capture functionality with lo
 - Photos persist between sessions using browser storage.  
 - No deletion functionality in current implementation.  
 
+---
+
 ## Roadmap / Future Improvements
 
 - Add responsive CSS for better mobile support  
