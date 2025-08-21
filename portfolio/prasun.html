@@ -402,34 +402,39 @@
 
         <div class="grid lg:grid-cols-2 gap-8">
           <form
+            id="contactForm"
             action="#"
             class="space-y-4 border border-cyan-400/40 rounded-2xl p-6 shadow-card"
           >
             <div>
-              <label class="block text-xl mb-1">Name</label>
+              <label for="name" class="block text-xl mb-1">Name</label>
               <input
+                id="name"
                 type="text"
                 placeholder="Your name"
                 class="w-full bg-crt-panel/70 border border-cyan-500/30 rounded px-3 py-2 outline-none focus:border-neon-blue"
               />
             </div>
             <div>
-              <label class="block text-xl mb-1">Email</label>
+              <label for="email" class="block text-xl mb-1">Email</label>
               <input
+                id="email"
                 type="email"
                 placeholder="you@example.com"
                 class="w-full bg-crt-panel/70 border border-cyan-500/30 rounded px-3 py-2 outline-none focus:border-neon-blue"
               />
             </div>
             <div>
-              <label class="block text-xl mb-1">Message</label>
+              <label for="message" class="block text-xl mb-1">Message</label>
               <textarea
+                id="message"
                 rows="5"
                 placeholder="Tell me about your project…"
                 class="w-full bg-crt-panel/70 border border-cyan-500/30 rounded px-3 py-2 outline-none focus:border-neon-blue"
               ></textarea>
             </div>
             <button
+              type="submit"
               class="px-6 py-2 text-2xl border border-neon-green rounded bevel shadow-glow hover:translate-y-[-2px] transition"
             >
               SEND
@@ -473,6 +478,38 @@
       });
       // Year
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      const contactForm = document.getElementById("contactForm");
+
+      contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        try {
+          const res = await fetch("http://localhost:8080/api/v1/message/send", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, message }),
+          });
+
+          const data = await res.json();
+
+          if (res.data.success) {
+            alert(data.message);
+            contactForm.reset();
+          } else {
+            alert(data.message || "Failed to send message.");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Something went wrong. Please try again.");
+        }
+      });
     </script>
   </body>
 </html>
