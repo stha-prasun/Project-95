@@ -150,10 +150,14 @@ The Camera and Gallery applications provide webcam capture functionality with lo
 
 ## Roadmap / Future Improvements
 
-- Add responsive CSS for better mobile support  
-- Enhance game logic and scoring in `flappy.html`  
-- Apply consistent styling across all pages  
-- Optionally deploy via GitHub Pages for easy sharing  
+### React Migration
+
+As part of future improvements, the game can be migrated from a plain HTML/JS setup to a modern React-based architecture:
+
+- **Rebuild the UI in React** for cleaner and more modular state management  
+- **Use React hooks** (`useState`, `useEffect`, `useRef`) to manage the game loop, animations, and event handling  
+- **Introduce Context API or Redux** if adding advanced features like multiplayer or global leaderboards  
+- **Optionally integrate TypeScript** for stronger type safety, scalability, and maintainability  
 
 ---
 
